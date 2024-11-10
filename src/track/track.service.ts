@@ -1,13 +1,7 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import database from '../database/database';
 import { TrackEntity, UpdateTrackDto, CreateTrackDto } from './track.entity';
-import { MessagesEnum } from '../helpers/enums';
 
 @Injectable()
 class TrackService {
@@ -26,18 +20,6 @@ class TrackService {
   }
 
   post(createTrackDto: CreateTrackDto) {
-    if (!createTrackDto.name || !createTrackDto.duration) {
-      throw new BadRequestException(MessagesEnum.NoRequiredFields);
-    }
-
-    const isAlreadyExist = database.tracksData.find(
-      (track) => track.name === createTrackDto.name,
-    );
-
-    if (isAlreadyExist) {
-      throw new ForbiddenException(MessagesEnum.AlreadyExists);
-    }
-
     const track = new TrackEntity(
       createTrackDto.name,
       createTrackDto.duration,

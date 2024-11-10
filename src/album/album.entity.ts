@@ -30,7 +30,7 @@ class AlbumEntity implements AlbumInterface {
   @IsNotEmpty()
   year: number;
 
-  @IsString()
+  @IsUUID(4)
   @IsOptional()
   artistId: string | null;
 }
@@ -44,7 +44,7 @@ class CreateAlbumDto {
   @IsNotEmpty()
   year: number;
 
-  @IsString()
+  @IsUUID(4)
   @IsOptional()
   artistId: string | null;
 }

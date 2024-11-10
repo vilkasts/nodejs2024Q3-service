@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -26,10 +25,6 @@ class UserService {
   }
 
   post(createUserDto: CreateUserDto) {
-    if (!createUserDto.login || !createUserDto.password) {
-      throw new BadRequestException(MessagesEnum.NoRequiredFields);
-    }
-
     const isAlreadyExist = database.usersData.find(
       (user) => user.login === createUserDto.login,
     );

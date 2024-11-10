@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import database from '../database/database';
 import {
@@ -11,7 +6,6 @@ import {
   UpdateArtistDto,
   CreateArtistDto,
 } from './artist.entity';
-import { MessagesEnum } from '../helpers/enums';
 
 @Injectable()
 class ArtistService {
@@ -30,18 +24,6 @@ class ArtistService {
   }
 
   post(createArtistDto: CreateArtistDto) {
-    if (!createArtistDto.name || typeof createArtistDto.grammy !== 'boolean') {
-      throw new BadRequestException(MessagesEnum.NoRequiredFields);
-    }
-
-    const isAlreadyExist = database.artistsData.find(
-      (artist) => artist.name === createArtistDto.name,
-    );
-
-    if (isAlreadyExist) {
-      throw new ForbiddenException(MessagesEnum.AlreadyExists);
-    }
-
     const artist = new ArtistEntity(
       createArtistDto.name,
       createArtistDto.grammy,

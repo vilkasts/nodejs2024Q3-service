@@ -1,13 +1,7 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import database from '../database/database';
 import { AlbumEntity, UpdateAlbumDto, CreateAlbumDto } from './album.entity';
-import { MessagesEnum } from '../helpers/enums';
 
 @Injectable()
 class AlbumService {
@@ -26,18 +20,6 @@ class AlbumService {
   }
 
   post(createAlbumDto: CreateAlbumDto) {
-    if (!createAlbumDto.name || !createAlbumDto.year) {
-      throw new BadRequestException(MessagesEnum.NoRequiredFields);
-    }
-
-    const isAlreadyExist = database.albumsData.find(
-      (album) => album.name === createAlbumDto.name,
-    );
-
-    if (isAlreadyExist) {
-      throw new ForbiddenException(MessagesEnum.AlreadyExists);
-    }
-
     const album = new AlbumEntity(
       createAlbumDto.name,
       createAlbumDto.year,
