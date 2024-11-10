@@ -46,6 +46,12 @@ class AlbumService {
     }
 
     database.albumsData.splice(index, 1);
+
+    database.tracksData.forEach((track) => {
+      if (track.albumId === id) {
+        track.albumId = null;
+      }
+    });
   }
 }
 
