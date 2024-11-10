@@ -47,6 +47,10 @@ class TrackService {
     }
 
     database.tracksData.splice(index, 1);
+
+    database.favoritesData.tracks = database.favoritesData.tracks.filter(
+      (track) => track !== id,
+    );
   }
 }
 

@@ -2,6 +2,7 @@ import { UserInterface } from '../user/user.model';
 import { TrackInterface } from '../track/track.model';
 import { ArtistInterface } from '../artist/artist.model';
 import { AlbumInterface } from '../album/album.model';
+import { FavoritesInterface } from '../favorites/favorites.model';
 
 const usersData: UserInterface[] = [
   {
@@ -41,4 +42,16 @@ const albumsData: AlbumInterface[] = [
   },
 ];
 
-export default { albumsData, artistsData, tracksData, usersData };
+const favoritesData: FavoritesInterface = {
+  artists: ['70d6460f-e3fc-4718-8304-6e9b383d3ef2'],
+  albums: ['70d6460f-e3fc-4718-8304-6e9b383d3ef2'],
+  tracks: ['70d6460f-e3fc-4718-8304-6e9b383d3ef2'],
+};
+
+export default {
+  albumsData,
+  artistsData,
+  favoritesData,
+  tracksData,
+  usersData,
+};

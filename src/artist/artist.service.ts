@@ -61,6 +61,10 @@ class ArtistService {
         album.artistId = null;
       }
     });
+
+    database.favoritesData.artists = database.favoritesData.artists.filter(
+      (artist) => artist !== id,
+    );
   }
 }
 

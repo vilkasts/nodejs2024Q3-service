@@ -52,6 +52,10 @@ class AlbumService {
         track.albumId = null;
       }
     });
+
+    database.favoritesData.albums = database.favoritesData.albums.filter(
+      (album) => album !== id,
+    );
   }
 }
 
