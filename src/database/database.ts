@@ -1,5 +1,7 @@
 import { UserInterface } from '../user/user.model';
 import { TrackInterface } from '../track/track.model';
+import { ArtistInterface } from '../artist/artist.model';
+import { AlbumInterface } from '../album/album.model';
 
 const usersData: UserInterface[] = [
   {
@@ -22,4 +24,21 @@ const tracksData: TrackInterface[] = [
   },
 ];
 
-export default { tracksData, usersData };
+const artistsData: ArtistInterface[] = [
+  {
+    id: '70d6460f-e3fc-4718-8304-6e9b383d3ef2',
+    name: 'Chupapi',
+    grammy: true,
+  },
+];
+
+const albumsData: AlbumInterface[] = [
+  {
+    id: '70d6460f-e3fc-4718-8304-6e9b383d3ef2',
+    name: 'Munyanio',
+    artistId: '70d6460f-e3fc-4718-8304-6e9b383d3ef1',
+    year: 1723,
+  },
+];
+
+export default { albumsData, artistsData, tracksData, usersData };
