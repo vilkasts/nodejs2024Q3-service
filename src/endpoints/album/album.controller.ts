@@ -28,9 +28,7 @@ class AlbumController {
 
   @Get(':id')
   @HttpCode(200)
-  getById(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  getById(@Param('id', ParseUUIDPipe) id: string) {
     return this.albumService.getById(id);
   }
 
@@ -43,7 +41,7 @@ class AlbumController {
   @Put(':id')
   @HttpCode(200)
   put(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ) {
     return this.albumService.put(id, updateAlbumDto);
@@ -51,9 +49,7 @@ class AlbumController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.albumService.delete(id);
   }
 }

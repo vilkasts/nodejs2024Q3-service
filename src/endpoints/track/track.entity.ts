@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import {
   IsInt,
   IsNotEmpty,
@@ -7,8 +8,7 @@ import {
 } from 'class-validator';
 import { v4 } from 'uuid';
 
-import { TrackInterface } from './track.model';
-import { PartialType } from '@nestjs/mapped-types';
+import { TrackInterface } from '../../helpers/models';
 
 class TrackEntity implements TrackInterface {
   constructor(

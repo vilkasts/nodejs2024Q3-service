@@ -4,8 +4,8 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 
-import database from '../database/database';
-import { MessagesEnum } from '../helpers/enums';
+import { MessagesEnum } from '../../helpers/enums';
+import database from '../../database/database';
 
 @Injectable()
 class FavoritesService {

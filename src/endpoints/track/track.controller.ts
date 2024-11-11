@@ -28,9 +28,7 @@ class TrackController {
 
   @Get(':id')
   @HttpCode(200)
-  getById(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  getById(@Param('id', ParseUUIDPipe) id: string) {
     return this.trackService.getById(id);
   }
 
@@ -43,7 +41,7 @@ class TrackController {
   @Put(':id')
   @HttpCode(200)
   put(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ) {
     return this.trackService.put(id, updateTrackDto);
@@ -51,9 +49,7 @@ class TrackController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.trackService.delete(id);
   }
 }

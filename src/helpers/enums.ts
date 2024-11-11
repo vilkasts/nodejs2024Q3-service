@@ -1,10 +1,8 @@
 enum MessagesEnum {
-  NotFound = 'Not found',
-  NoRequiredFields = "Request body doesn't contain required fields",
-  AlreadyExists = 'User with the same login already exists',
-  InvalidPassword = 'Previous password is incorrect',
+  InvalidPassword = 'Incorrect old password',
+  NotFound = "An entity with this identifier doesn't exist",
   SuccessfullyAdded = 'Successfully added',
-  SuccessfullyRemoved = 'Successfully removed',
+  UserAlreadyExists = 'User with the same login already exists',
 }
 
 export { MessagesEnum };

@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import database from '../database/database';
 import { TrackEntity, UpdateTrackDto, CreateTrackDto } from './track.entity';
+import { MessagesEnum } from '../../helpers/enums';
+import database from '../../database/database';
 
 @Injectable()
 class TrackService {
@@ -13,7 +14,7 @@ class TrackService {
     const track = database.tracksData.find((track) => track.id === id);
 
     if (!track) {
-      throw new NotFoundException();
+      throw new NotFoundException(MessagesEnum.NotFound);
     }
 
     return track;
@@ -43,7 +44,7 @@ class TrackService {
     const index = database.tracksData.findIndex((track) => track.id === id);
 
     if (index === -1) {
-      throw new NotFoundException();
+      throw new NotFoundException(MessagesEnum.NotFound);
     }
 
     database.tracksData.splice(index, 1);

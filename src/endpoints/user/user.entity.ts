@@ -3,11 +3,7 @@ import { IsInt, IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { v4 } from 'uuid';
 
-import {
-  CreateUserDtoInterface,
-  UpdatePasswordDtoInterface,
-  UserInterface,
-} from './user.model';
+import { UserInterface } from '../../helpers/models';
 
 class UserEntity implements UserInterface {
   constructor(login: string, password: string) {
@@ -42,7 +38,7 @@ class UserEntity implements UserInterface {
   updatedAt: number;
 }
 
-export class CreateUserDto implements CreateUserDtoInterface {
+export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   login: string;
@@ -52,10 +48,7 @@ export class CreateUserDto implements CreateUserDtoInterface {
   password: string;
 }
 
-export class UpdateUserDto
-  extends PartialType(CreateUserDto)
-  implements UpdatePasswordDtoInterface
-{
+export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
   @IsNotEmpty()
   oldPassword: string;

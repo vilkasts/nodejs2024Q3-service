@@ -28,9 +28,7 @@ class ArtistController {
 
   @Get(':id')
   @HttpCode(200)
-  getById(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  getById(@Param('id', ParseUUIDPipe) id: string) {
     return this.artistService.getById(id);
   }
 
@@ -43,7 +41,7 @@ class ArtistController {
   @Put(':id')
   @HttpCode(200)
   put(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ) {
     return this.artistService.put(id, updateArtistDto);
@@ -51,9 +49,7 @@ class ArtistController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.artistService.delete(id);
   }
 }

@@ -28,9 +28,7 @@ class UserController {
 
   @Get(':id')
   @HttpCode(200)
-  getById(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  getById(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getById(id);
   }
 
@@ -43,7 +41,7 @@ class UserController {
   @Put(':id')
   @HttpCode(200)
   put(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.put(id, updateUserDto);
@@ -51,9 +49,7 @@ class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(
-    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 400 })) id: string,
-  ) {
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     this.userService.delete(id);
   }
 }

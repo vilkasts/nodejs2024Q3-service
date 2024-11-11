@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import {
   IsNotEmpty,
   IsNumber,
@@ -7,8 +8,7 @@ import {
 } from 'class-validator';
 import { v4 } from 'uuid';
 
-import { PartialType } from '@nestjs/mapped-types';
-import { AlbumInterface } from './album.model';
+import { AlbumInterface } from '../../helpers/models';
 
 class AlbumEntity implements AlbumInterface {
   constructor(name: string, year: number, artistId: string | null) {

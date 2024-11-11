@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import database from '../database/database';
 import {
   ArtistEntity,
   UpdateArtistDto,
   CreateArtistDto,
 } from './artist.entity';
+import { MessagesEnum } from '../../helpers/enums';
+import database from '../../database/database';
 
 @Injectable()
 class ArtistService {
@@ -17,7 +18,7 @@ class ArtistService {
     const artist = database.artistsData.find((artist) => artist.id === id);
 
     if (!artist) {
-      throw new NotFoundException();
+      throw new NotFoundException(MessagesEnum.NotFound);
     }
 
     return artist;
@@ -45,7 +46,7 @@ class ArtistService {
     const index = database.artistsData.findIndex((artist) => artist.id === id);
 
     if (index === -1) {
-      throw new NotFoundException();
+      throw new NotFoundException(MessagesEnum.NotFound);
     }
 
     database.artistsData.splice(index, 1);

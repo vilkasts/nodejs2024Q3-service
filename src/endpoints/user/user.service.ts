@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import database from '../database/database';
-import { MessagesEnum } from '../helpers/enums';
+import { MessagesEnum } from '../../helpers/enums';
 import { CreateUserDto, UpdateUserDto, UserEntity } from './user.entity';
+import database from '../../database/database';
 
 @Injectable()
 class UserService {
@@ -30,7 +30,7 @@ class UserService {
     );
 
     if (isAlreadyExist) {
-      throw new ForbiddenException(MessagesEnum.AlreadyExists);
+      throw new ForbiddenException(MessagesEnum.UserAlreadyExists);
     }
 
     const user = new UserEntity(createUserDto.login, createUserDto.password);

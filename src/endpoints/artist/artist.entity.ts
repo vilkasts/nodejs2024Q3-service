@@ -1,8 +1,8 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { v4 } from 'uuid';
 
-import { PartialType } from '@nestjs/mapped-types';
-import { ArtistInterface } from './artist.model';
+import { ArtistInterface } from '../../helpers/models';
 
 class ArtistEntity implements ArtistInterface {
   constructor(name: string, grammy: boolean) {
