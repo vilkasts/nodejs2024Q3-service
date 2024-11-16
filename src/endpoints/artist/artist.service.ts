@@ -7,11 +7,14 @@ import {
 } from './artist.entity';
 import { MessagesEnum } from '../../helpers/enums';
 import database from '../../database/database';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 class ArtistService {
+  constructor(private readonly prisma: PrismaService) {}
+
   get() {
-    return database.artistsData;
+    return this.prisma.artist.findMany();
   }
 
   getById(id: string) {

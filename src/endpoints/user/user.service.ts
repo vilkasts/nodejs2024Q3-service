@@ -7,15 +7,20 @@ import {
 import { MessagesEnum } from '../../helpers/enums';
 import { CreateUserDto, UpdateUserDto, UserEntity } from './user.entity';
 import database from '../../database/database';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 class UserService {
-  get() {
-    return database.usersData;
+  constructor(private readonly prisma: PrismaService) {}
+
+  async get() {
+    return this.prisma.user.findMany();
   }
 
-  getById(id: string) {
-    const user = database.usersData.find((user) => user.id === id);
+  async getById(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
 
     if (!user) {
       throw new NotFoundException(MessagesEnum.NotFound);
@@ -39,14 +44,16 @@ class UserService {
     return user;
   }
 
-  put(id: string, updateUserDto: UpdateUserDto) {
-    const user = this.getById(id);
+  async put(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.getById(id);
 
     if (user.password !== updateUserDto.oldPassword) {
       throw new ForbiddenException(MessagesEnum.InvalidPassword);
     }
 
     user.password = updateUserDto.newPassword;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     user.updatedAt = Date.now();
     user.version = user.version + 1;
 

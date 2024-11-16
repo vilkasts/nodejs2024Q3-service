@@ -6,9 +6,12 @@ import {
 
 import { MessagesEnum } from '../../helpers/enums';
 import database from '../../database/database';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 class FavoritesService {
+  constructor(private readonly prisma: PrismaService) {}
+
   get() {
     return {
       artists: database.favoritesData.artists

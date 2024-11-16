@@ -1,13 +1,16 @@
+import { PrismaClient } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { TrackEntity, UpdateTrackDto, CreateTrackDto } from './track.entity';
 import { MessagesEnum } from '../../helpers/enums';
 import database from '../../database/database';
 
+const prisma = new PrismaClient();
+
 @Injectable()
 class TrackService {
   get() {
-    return database.tracksData;
+    return prisma.track.findMany();
   }
 
   getById(id: string) {

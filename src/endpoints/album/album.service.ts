@@ -3,11 +3,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { AlbumEntity, UpdateAlbumDto, CreateAlbumDto } from './album.entity';
 import { MessagesEnum } from '../../helpers/enums';
 import database from '../../database/database';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 class AlbumService {
+  constructor(private readonly prisma: PrismaService) {}
+
   get() {
-    return database.albumsData;
+    return this.prisma.album.findMany();
   }
 
   getById(id: string) {
