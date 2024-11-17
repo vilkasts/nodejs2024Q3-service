@@ -8,6 +8,8 @@ const main = async () => {
       login: 'Valera',
       password: 'password',
       version: 1,
+      createdAt: BigInt(Date.now()),
+      updatedAt: BigInt(Date.now()),
     },
   });
 
