@@ -6,7 +6,6 @@ import {
   CreateArtistDto,
 } from './artist.entity';
 import { MessagesEnum } from '../../helpers/enums';
-import database from '../../database/database';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
@@ -68,11 +67,9 @@ class ArtistService {
       where: { id },
     });
 
-    // TODO: add after
-    database.tracksData.forEach((track) => {
-      if (track.artistId === id) {
-        track.artistId = null;
-      }
+    await this.prisma.track.updateMany({
+      where: { artistId: id },
+      data: { artistId: null },
     });
 
     await this.prisma.album.updateMany({
@@ -81,9 +78,9 @@ class ArtistService {
     });
 
     // TODO: add after
-    database.favoritesData.artists = database.favoritesData.artists.filter(
-      (artist) => artist !== id,
-    );
+    // database.favoritesData.artists = database.favoritesData.artists.filter(
+    //   (artist) => artist !== id,
+    // );
   }
 }
 

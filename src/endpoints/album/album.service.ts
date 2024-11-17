@@ -54,10 +54,17 @@ class AlbumService {
 
   async put(id: string, updateAlbumDto: UpdateAlbumDto) {
     const album = await this.getById(id);
-    const isArtistExist = await this.artist.getById(updateAlbumDto.artistId);
 
-    if (!album || !isArtistExist) {
+    if (!album) {
       return;
+    }
+
+    if (updateAlbumDto.artistId) {
+      const isArtistExist = await this.artist.getById(updateAlbumDto.artistId);
+
+      if (!isArtistExist) {
+        return;
+      }
     }
 
     return this.prisma.album.update({
@@ -77,7 +84,6 @@ class AlbumService {
       where: { id },
     });
 
-    // TODO: test fails
     await this.prisma.track.updateMany({
       where: { albumId: id },
       data: { albumId: null },

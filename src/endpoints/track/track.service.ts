@@ -3,58 +3,114 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { TrackEntity, UpdateTrackDto, CreateTrackDto } from './track.entity';
 import { MessagesEnum } from '../../helpers/enums';
-import database from '../../database/database';
+import { PrismaService } from '../../prisma/prisma.service';
+import { ArtistService } from '../artist/artist.service';
+import { AlbumService } from '../album/album.service';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 class TrackService {
-  get() {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly artist: ArtistService,
+    private readonly album: AlbumService,
+  ) {}
+
+  async get() {
     return prisma.track.findMany();
   }
 
-  getById(id: string) {
-    const track = database.tracksData.find((track) => track.id === id);
+  async getById(id: string) {
+    const track = await this.prisma.track.findUnique({
+      where: { id },
+    });
 
     if (!track) {
-      throw new NotFoundException(MessagesEnum.NotFound);
+      throw new NotFoundException(
+        MessagesEnum.TrackNotFound.replace('{{id}}', id),
+      );
     }
 
     return track;
   }
 
-  post(createTrackDto: CreateTrackDto) {
+  async post(createTrackDto: CreateTrackDto) {
+    if (createTrackDto.artistId) {
+      const isArtistExist = await this.artist.getById(createTrackDto.artistId);
+
+      if (!isArtistExist) {
+        return;
+      }
+    }
+
+    if (createTrackDto.albumId) {
+      const isAlbumExist = await this.album.getById(createTrackDto.albumId);
+
+      if (!isAlbumExist) {
+        return;
+      }
+    }
+
     const track = new TrackEntity(
       createTrackDto.name,
       createTrackDto.duration,
-      createTrackDto.artistId,
-      createTrackDto.albumId,
+      createTrackDto.artistId ?? null,
+      createTrackDto.albumId ?? null,
     );
-    database.tracksData.push(track);
+
+    await this.prisma.track.create({
+      data: track,
+    });
 
     return track;
   }
 
-  put(id: string, updateTrackDto: UpdateTrackDto) {
-    const track = this.getById(id);
+  async put(id: string, updateTrackDto: UpdateTrackDto) {
+    const track = await this.getById(id);
 
-    Object.assign(track, updateTrackDto);
-
-    return track;
-  }
-
-  delete(id: string) {
-    const index = database.tracksData.findIndex((track) => track.id === id);
-
-    if (index === -1) {
-      throw new NotFoundException(MessagesEnum.NotFound);
+    if (!track) {
+      return;
     }
 
-    database.tracksData.splice(index, 1);
+    if (updateTrackDto.artistId) {
+      const isArtistExist = await this.artist.getById(updateTrackDto.artistId);
 
-    database.favoritesData.tracks = database.favoritesData.tracks.filter(
-      (track) => track !== id,
-    );
+      if (!isArtistExist) {
+        return;
+      }
+    }
+
+    if (updateTrackDto.albumId) {
+      const isAlbumExist = await this.album.getById(updateTrackDto.albumId);
+
+      if (!isAlbumExist) {
+        return;
+      }
+    }
+
+    return this.prisma.track.update({
+      where: { id },
+      data: updateTrackDto,
+    });
+  }
+
+  async delete(id: string) {
+    const track = await this.getById(id);
+
+    if (!track) {
+      return;
+    }
+
+    await this.prisma.track.delete({
+      where: { id },
+    });
+
+    //TODO: Replace after
+
+    // database.favoritesData.tracks = database.favoritesData.tracks.filter(
+    //   (track) => track !== id,
+    // );
   }
 }
 
