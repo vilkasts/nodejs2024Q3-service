@@ -1,65 +1,111 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { AlbumEntity, UpdateAlbumDto, CreateAlbumDto } from './album.entity';
+import { AlbumEntity, CreateAlbumDto, UpdateAlbumDto } from './album.entity';
 import { MessagesEnum } from '../../helpers/enums';
-import database from '../../database/database';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ArtistService } from '../artist/artist.service';
 
 @Injectable()
 class AlbumService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly artist: ArtistService,
+  ) {}
 
-  get() {
+  async get() {
     return this.prisma.album.findMany();
   }
 
-  getById(id: string) {
-    const album = database.albumsData.find((album) => album.id === id);
+  async getById(id: string) {
+    const album = await this.prisma.album.findUnique({
+      where: { id },
+    });
 
     if (!album) {
-      throw new NotFoundException(MessagesEnum.NotFound);
+      throw new NotFoundException(
+        MessagesEnum.AlbumNotFound.replace('{{id}}', id),
+      );
     }
 
     return album;
   }
 
-  post(createAlbumDto: CreateAlbumDto) {
+  async post(createAlbumDto: CreateAlbumDto) {
+    if (createAlbumDto.artistId) {
+      const isArtistExist = await this.artist.getById(createAlbumDto.artistId);
+
+      if (!isArtistExist) {
+        return;
+      }
+    }
+
     const album = new AlbumEntity(
       createAlbumDto.name,
       createAlbumDto.year,
-      createAlbumDto.artistId,
+      createAlbumDto.artistId ?? null,
     );
-    database.albumsData.push(album);
 
-    return album;
-  }
-
-  put(id: string, updateAlbumDto: UpdateAlbumDto) {
-    const album = this.getById(id);
-
-    Object.assign(album, updateAlbumDto);
-
-    return album;
-  }
-
-  delete(id: string) {
-    const index = database.albumsData.findIndex((album) => album.id === id);
-
-    if (index === -1) {
-      throw new NotFoundException(MessagesEnum.NotFound);
-    }
-
-    database.albumsData.splice(index, 1);
-
-    database.tracksData.forEach((track) => {
-      if (track.albumId === id) {
-        track.albumId = null;
-      }
+    await this.prisma.album.create({
+      data: album,
     });
 
-    database.favoritesData.albums = database.favoritesData.albums.filter(
-      (album) => album !== id,
-    );
+    return album;
+  }
+
+  async put(id: string, updateAlbumDto: UpdateAlbumDto) {
+    const album = await this.getById(id);
+    const isArtistExist = await this.artist.getById(updateAlbumDto.artistId);
+
+    if (!album || !isArtistExist) {
+      return;
+    }
+
+    return this.prisma.album.update({
+      where: { id },
+      data: updateAlbumDto,
+    });
+  }
+
+  async delete(id: string) {
+    const album = await this.getById(id);
+
+    if (!album) {
+      return;
+    }
+
+    await this.prisma.album.delete({
+      where: { id },
+    });
+
+    // TODO: test fails
+    await this.prisma.track.updateMany({
+      where: { albumId: id },
+      data: { albumId: null },
+    });
+
+    // TODO: add after
+    // const favorites = await this.prisma.favorites.findMany({
+    //   where: {
+    //     albums: {
+    //       has: id,
+    //     },
+    //   },
+    // });
+    //
+    // console.log(favorites);
+    //
+    // await Promise.all(
+    //   favorites.map((favorite) =>
+    //     this.prisma.favorites.update({
+    //       where: { userId: favorite.userId },
+    //       data: {
+    //         albums: {
+    //           set: favorite.albums.filter((albumId) => albumId !== id),
+    //         },
+    //       },
+    //     }),
+    //   ),
+    // );
   }
 }
 

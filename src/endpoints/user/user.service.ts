@@ -29,7 +29,7 @@ class UserService {
     return user;
   }
 
-  post(createUserDto: CreateUserDto) {
+  async post(createUserDto: CreateUserDto) {
     const isAlreadyExist = database.usersData.find(
       (user) => user.login === createUserDto.login,
     );
@@ -37,6 +37,16 @@ class UserService {
     if (isAlreadyExist) {
       throw new ForbiddenException(MessagesEnum.UserAlreadyExists);
     }
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        login: createUserDto.login,
+        password: createUserDto.password,
+        version: 1,
+        createdAt: Date.now().toString(),
+        updatedAt: Date.now().toString(),
+      },
+    });
 
     const user = new UserEntity(createUserDto.login, createUserDto.password);
     database.usersData.push(user);
@@ -60,7 +70,7 @@ class UserService {
     return user;
   }
 
-  delete(id: string) {
+  async delete(id: string) {
     const index = database.usersData.findIndex((user) => user.id === id);
 
     if (index === -1) {
