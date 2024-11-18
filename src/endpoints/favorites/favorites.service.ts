@@ -44,11 +44,18 @@ class FavoritesService {
       throw new UnprocessableEntityException(MessagesEnum.NotFound);
     }
 
-    const favorites = await this.prisma.favorites.findFirst();
+    const user = await this.prisma.user.findFirst({
+      select: { id: true },
+    });
+
+    const favorites = await this.prisma.favorites.findFirst({
+      where: { userId: user.id },
+    });
 
     if (!favorites) {
       await this.prisma.favorites.create({
         data: {
+          userId: user.id,
           tracks: [id],
           albums: [],
           artists: [],
@@ -58,7 +65,7 @@ class FavoritesService {
       await this.prisma.favorites.update({
         where: { userId: favorites.userId },
         data: {
-          tracks: { push: id },
+          tracks: [...favorites.tracks, id],
         },
       });
     }
@@ -75,11 +82,18 @@ class FavoritesService {
       throw new UnprocessableEntityException(MessagesEnum.NotFound);
     }
 
-    const favorites = await this.prisma.favorites.findFirst();
+    const user = await this.prisma.user.findFirst({
+      select: { id: true },
+    });
+
+    const favorites = await this.prisma.favorites.findFirst({
+      where: { userId: user.id },
+    });
 
     if (!favorites) {
       await this.prisma.favorites.create({
         data: {
+          userId: user.id,
           tracks: [],
           albums: [],
           artists: [id],
@@ -106,11 +120,18 @@ class FavoritesService {
       throw new UnprocessableEntityException(MessagesEnum.NotFound);
     }
 
-    const favorites = await this.prisma.favorites.findFirst();
+    const user = await this.prisma.user.findFirst({
+      select: { id: true },
+    });
+
+    const favorites = await this.prisma.favorites.findFirst({
+      where: { userId: user.id },
+    });
 
     if (!favorites) {
       await this.prisma.favorites.create({
         data: {
+          userId: user.id,
           tracks: [],
           albums: [id],
           artists: [],
