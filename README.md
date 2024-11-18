@@ -13,6 +13,7 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 3. Create `.env` file
 4. Use `npm install` to install dependencies
 5. Run vulnerabilities scan `npm run audit`
+6. Run `npm run prisma:generate`
 
 ---
 
