@@ -1,72 +1,187 @@
-# Home Library Service
+# Dzmitry Luzko (Dzmitry(@vilkasts)) repo
 
-## Prerequisites
+## Task 7: Home Library Service
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+A RESTful API for managing a personal library of Users, Artists, Albums, Tracks, and Favorites. This application is built with modularity in mind to later integrate with a database.
 
-## Downloading
+---
 
-```
-git clone {repository URL}
-```
+## Endpoints
 
-## Installing NPM modules
+### Users (`/user`)
 
-```
-npm install
-```
+- **GET /user** - Retrieve all users.
+- **GET /user/:id** - Retrieve user by ID.
+    - `400` if `userId` is invalid.
+    - `404` if user not found.
+- **POST /user** - Create a new user.
+    - `201` with the created user.
+    - `400` if required fields are missing.
+- **PUT /user/:id** - Update user password.
+    - `200` with updated user info.
+    - `400` if `userId` is invalid.
+    - `404` if user not found.
+    - `403` if `oldPassword` is incorrect.
+- **DELETE /user/:id** - Delete user by ID.
+    - `204` on successful deletion.
+    - `400` if `userId` is invalid.
+    - `404` if user not found.
 
-## Running application
+### Artists (`/artist`)
 
-```
-npm start
-```
+- **GET /artist** - Retrieve all artists.
+- **GET /artist/:id** - Retrieve artist by ID.
+    - `400` if `artistId` is invalid.
+    - `404` if artist not found.
+- **POST /artist** - Create a new artist.
+    - `201` with the created artist.
+    - `400` if required fields are missing.
+- **PUT /artist/:id** - Update artist information.
+    - `200` with updated artist info.
+    - `400` if `artistId` is invalid.
+    - `404` if artist not found.
+- **DELETE /artist/:id** - Delete artist by ID.
+    - `204` on successful deletion.
+    - References in albums/tracks and favorites updated to `null`.
+    - `400` if `artistId` is invalid.
+    - `404` if artist not found.
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+### Albums (`/album`)
+
+- **GET /album** - Retrieve all albums.
+- **GET /album/:id** - Retrieve album by ID.
+    - `400` if `albumId` is invalid.
+    - `404` if album not found.
+- **POST /album** - Create a new album.
+    - `201` with the created album.
+    - `400` if required fields are missing.
+- **PUT /album/:id** - Update album information.
+    - `200` with updated album info.
+    - `400` if `albumId` is invalid.
+    - `404` if album not found.
+- **DELETE /album/:id** - Delete album by ID.
+    - `204` on successful deletion.
+    - References in favorites updated to `null`.
+    - `400` if `albumId` is invalid.
+    - `404` if album not found.
+
+### Tracks (`/track`)
+
+- **GET /track** - Retrieve all tracks.
+- **GET /track/:id** - Retrieve track by ID.
+    - `400` if `trackId` is invalid.
+    - `404` if track not found.
+- **POST /track** - Create a new track.
+    - `201` with the created track.
+    - `400` if required fields are missing.
+- **PUT /track/:id** - Update track information.
+    - `200` with updated track info.
+    - `400` if `trackId` is invalid.
+    - `404` if track not found.
+- **DELETE /track/:id** - Delete track by ID.
+    - `204` on successful deletion.
+    - References in favorites updated to `null`.
+    - `400` if `trackId` is invalid.
+    - `404` if track not found.
+
+### Favorites (`/favs`)
+
+- **GET /favs** - Retrieve all favorites, structured by Artists, Albums, and Tracks.
+- **POST /favs/track/:id** - Add a track to favorites.
+    - `201` on success.
+    - `400` if `trackId` is invalid.
+    - `422` if track not found.
+- **DELETE /favs/track/:id** - Remove a track from favorites.
+    - `204` on successful removal.
+    - `400` if `trackId` is invalid.
+    - `404` if track is not in favorites.
+- **POST /favs/album/:id** - Add an album to favorites.
+    - `201` on success.
+    - `400` if `albumId` is invalid.
+    - `422` if album not found.
+- **DELETE /favs/album/:id** - Remove an album from favorites.
+    - `204` on successful removal.
+    - `400` if `albumId` is invalid.
+    - `404` if album is not in favorites.
+- **POST /favs/artist/:id** - Add an artist to favorites.
+    - `201` on success.
+    - `400` if `artistId` is invalid.
+    - `422` if artist not found.
+- **DELETE /favs/artist/:id** - Remove an artist from favorites.
+    - `204` on successful removal.
+    - `400` if `artistId` is invalid.
+    - `404` if artist is not in favorites.
+
+---
+
+## Data Models
+
+### User
+- **id**: `string` (UUID)
+- **login**: `string`
+- **password**: `string`
+- **version**: `number` (Integer)
+- **createdAt**: `number` (Timestamp)
+- **updatedAt**: `number` (Timestamp)
+
+### Artist
+- **id**: `string` (UUID)
+- **name**: `string`
+- **grammy**: `boolean`
+
+### Track
+- **id**: `string` (UUID)
+- **name**: `string`
+- **artistId**: `string` (UUID) or `null`
+- **albumId**: `string` (UUID) or `null`
+- **duration**: `number` (Integer)
+
+### Album
+- **id**: `string` (UUID)
+- **name**: `string`
+- **year**: `number` (Integer)
+- **artistId**: `string` (UUID) or `null`
+
+### Favorites
+- **artists**: `Array of strings (UUID)`
+- **albums**: `Array of strings (UUID)`
+- **tracks**: `Array of strings (UUID)`
+
+
+---
+
+## Getting Started
+
+1. Clone the repository.
+2. Create `.env` file
+3. Install dependencies
+
+---
+
+## Usage
+
+`npm run start` - Run the project
+
+`npm run start:dev` - Run the project in `development` mode
+
+`npm run start:debug` - Run the project in `debug` mode
+
+`npm run start:prod` - Run the project in `production` mode
+
+---
 
 ## Testing
 
-After application running open new terminal and enter:
+`npm run test` - Run all tests
 
-To run all tests without authorization
+`npm run test:auth` - Run `auth` tests
 
-```
-npm run test
-```
+`npm run test:refresh` - Run `refresh` tests
 
-To run only one of all test suites
+`npm run test:watch` - Run tests in `watch` mode
 
-```
-npm run test -- <path to suite>
-```
+`npm run test:cov` - Run tests with coverage report
 
-To run all test with authorization
+`npm run test:debug` - Run tests in `debug` mode
 
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
-```
-
-### Auto-fix and format
-
-```
-npm run lint
-```
-
-```
-npm run format
-```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+---
