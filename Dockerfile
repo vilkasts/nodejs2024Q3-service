@@ -10,6 +10,6 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package*.json ./
-RUN npm install --only=production
+RUN npm prune --production && npm cache clean --force
 CMD ["npm", "run", "start:prod"]
 EXPOSE 4000
