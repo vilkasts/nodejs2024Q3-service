@@ -9,9 +9,10 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 ## Getting Started
 
 1. Clone the repository.
-2. Create `.env` file
-3. Use `npm install` to install dependencies
-4. Run vulnerabilities scan `npm run audit`
+2. Select the `feat/containerization-database-orm` branch and pull the latest changes using `git pull`
+3. Create `.env` file
+4. Use `npm install` to install dependencies
+5. Run vulnerabilities scan `npm run audit`
 
 ---
 

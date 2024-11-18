@@ -1,8 +1,8 @@
 {
   "name": "home-library",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "RESTful API for managing a personal library",
+  "author": "vilkasts",
   "private": true,
   "license": "UNLICENSED",
   "prisma": {
