@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaModule } from './prisma/prisma.module';
 import {
   AlbumModule,
   ArtistModule,
@@ -12,11 +13,12 @@ import {
 
 @Module({
   imports: [
-    UserModule,
-    TrackModule,
-    ArtistModule,
     AlbumModule,
+    ArtistModule,
     FavoritesModule,
+    PrismaModule,
+    TrackModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
