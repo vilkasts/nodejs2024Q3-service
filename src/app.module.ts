@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import {
   AlbumModule,
   ArtistModule,
+  AuthModule,
   FavoritesModule,
   TrackModule,
   UserModule,
@@ -15,6 +16,7 @@ import {
   imports: [
     AlbumModule,
     ArtistModule,
+    AuthModule,
     FavoritesModule,
     PrismaModule,
     TrackModule,
