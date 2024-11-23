@@ -12,12 +12,6 @@ class AuthCheckService implements NestMiddleware {
   constructor(private readonly jwtService: JwtService) {}
 
   use(req: any, _: any, next: () => void) {
-    const isAuthRequired = process.env.TEST_MODE === 'auth';
-
-    if (!isAuthRequired) {
-      return next();
-    }
-
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
       throw new UnauthorizedException(MessagesEnum.NotAuthorized);
