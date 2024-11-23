@@ -11,12 +11,14 @@ import {
   TrackModule,
   UserModule,
 } from './endpoints';
+import { AuthCheckModule } from './tools/auth-check/auth-check.module';
 
 @Module({
   imports: [
     AlbumModule,
     ArtistModule,
     AuthModule,
+    AuthCheckModule,
     FavoritesModule,
     PrismaModule,
     TrackModule,

@@ -11,6 +11,7 @@ enum MessagesEnum {
   UserAlreadyExists = 'User with the same login already exists',
   InvalidToken = 'Refresh token is invalid or expired',
   NoToken = 'No refreshToken in request body',
+  NotAuthorized = 'Not authorized',
 }
 
 enum TokenExpiryTimeEnum {
