@@ -9,6 +9,8 @@ enum MessagesEnum {
   NotFound = "An entity with this identifier doesn't exist",
   SuccessfullyAdded = 'Successfully added',
   UserAlreadyExists = 'User with the same login already exists',
+  InvalidToken = 'Refresh token is invalid or expired',
+  NoToken = 'No refreshToken in request body',
 }
 
 enum TokenExpiryTimeEnum {

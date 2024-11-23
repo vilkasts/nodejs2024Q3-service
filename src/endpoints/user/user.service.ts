@@ -47,7 +47,10 @@ class UserService {
     return user;
   }
 
-  async validateUser({ login, password }: CreateUserDto) {
+  async validateUser(
+    { login, password }: CreateUserDto,
+    isHashedPassword = false,
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { login: login },
     });
@@ -58,7 +61,14 @@ class UserService {
       );
     }
 
-    if (!(await validatePassword(password, user.password))) {
+    if (isHashedPassword && password !== user.password) {
+      throw new ForbiddenException(MessagesEnum.InvalidPassword);
+    }
+
+    if (
+      !isHashedPassword &&
+      !(await validatePassword(password, user.password))
+    ) {
       throw new ForbiddenException(MessagesEnum.InvalidPassword);
     }
 
