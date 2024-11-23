@@ -46,6 +46,24 @@ class UserService {
     return user;
   }
 
+  async validateUser({ login, password }: CreateUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { login: login },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        MessagesEnum.UsernameNotFound.replace('{{username}}', login),
+      );
+    }
+
+    if (user.password !== password) {
+      throw new ForbiddenException(MessagesEnum.InvalidPassword);
+    }
+
+    return user;
+  }
+
   async post(createUserDto: CreateUserDto) {
     const users = await this.get();
     const isAlreadyExist = users.find(
@@ -77,7 +95,7 @@ class UserService {
     }
 
     if (user.password !== updateUserDto.oldPassword) {
-      throw new ForbiddenException(MessagesEnum.InvalidPassword);
+      throw new ForbiddenException(MessagesEnum.InvalidOldPassword);
     }
 
     return this.prisma.user.update({
