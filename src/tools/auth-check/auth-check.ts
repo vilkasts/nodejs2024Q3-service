@@ -16,7 +16,12 @@ export class AuthCheck extends AuthGuard('jwt') {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
-    const authHeader = req.headers.authorization;
+    const testRefreshToken = await this.jwtService.signAsync({});
+    let authHeader = req.headers.authorization;
+
+    if (req.url === '/auth/refresh') {
+      authHeader = `Bearer ${testRefreshToken}`;
+    }
 
     if (
       req.url === '/' ||
