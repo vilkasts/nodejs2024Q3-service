@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthCheck } from './tools/auth-check/auth-check';
 import {
   AlbumModule,
   ArtistModule,
@@ -11,20 +13,24 @@ import {
   TrackModule,
   UserModule,
 } from './endpoints';
-import { AuthCheckModule } from './tools/auth-check/auth-check.module';
 
 @Module({
   imports: [
     AlbumModule,
     ArtistModule,
     AuthModule,
-    AuthCheckModule,
     FavoritesModule,
     PrismaModule,
     TrackModule,
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthCheck,
+    },
+  ],
 })
 export class AppModule {}

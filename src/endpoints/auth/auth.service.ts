@@ -3,9 +3,10 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+
 import { CreateUserDto } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
 import { MessagesEnum, TokenExpiryTimeEnum } from '../../helpers/enums';
 
 @Injectable()
