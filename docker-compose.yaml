@@ -6,7 +6,7 @@ services:
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
-    image: vilkasts/nodejs2024q3-service-app:latest
+    image: vilkasts/app-test:latest
     depends_on:
       - db
     env_file:
@@ -24,7 +24,7 @@ services:
 #    build:
 #      context: ./prisma
 #      dockerfile: Dockerfile
-    image: vilkasts/nodejs2024q3-service-db:latest
+    image: vilkasts/db-test:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_HOST: ${POSTGRES_HOST}

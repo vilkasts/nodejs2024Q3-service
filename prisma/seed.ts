@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const main = async () => {
-  const user = await prisma.user.create({
+  await prisma.user.create({
     data: {
       login: 'Valera',
       password: 'password',
@@ -37,12 +37,21 @@ const main = async () => {
     },
   });
 
-  await prisma.favorites.create({
+  await prisma.favoriteArtists.create({
     data: {
-      userId: user.id,
-      artists: [artist.id],
-      tracks: [track.id],
-      albums: [album.id],
+      artistId: artist.id,
+    },
+  });
+
+  await prisma.favoriteAlbums.create({
+    data: {
+      albumId: album.id,
+    },
+  });
+
+  await prisma.favoriteTracks.create({
+    data: {
+      trackId: track.id,
     },
   });
 };
