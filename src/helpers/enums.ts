@@ -12,6 +12,7 @@ enum MessagesEnum {
   InvalidToken = 'Refresh token is invalid or expired',
   NoToken = 'No refreshToken in request body',
   NotAuthorized = 'Not authorized',
+  AlreadyAdded = 'Already added',
 }
 
 enum TokenExpiryTimeEnum {

@@ -3,6 +3,7 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+
 import { MessagesEnum } from '../../helpers/enums';
 import { PrismaService } from '../../prisma/prisma.service';
 
@@ -42,7 +43,7 @@ class FavoritesService {
     });
 
     if (existingFavorite) {
-      throw new UnprocessableEntityException('@@@@');
+      throw new UnprocessableEntityException(MessagesEnum.AlreadyAdded);
     }
 
     await this.prisma.favoriteTracks.create({
@@ -64,7 +65,7 @@ class FavoritesService {
     });
 
     if (existingFavorite) {
-      throw new UnprocessableEntityException('@@@@@@@@@@');
+      throw new UnprocessableEntityException(MessagesEnum.AlreadyAdded);
     }
 
     await this.prisma.favoriteArtists.create({
@@ -86,7 +87,7 @@ class FavoritesService {
     });
 
     if (existingFavorite) {
-      throw new UnprocessableEntityException('@@@@@@@');
+      throw new UnprocessableEntityException(MessagesEnum.AlreadyAdded);
     }
 
     await this.prisma.favoriteAlbums.create({

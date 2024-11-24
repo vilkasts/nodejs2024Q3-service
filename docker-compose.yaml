@@ -3,10 +3,10 @@ services:
     container_name: home-library-service
     command: sh -c "npx prisma migrate deploy && npm run start:prod"
     working_dir: /app
+    image: vilkasts/app-test:latest
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
-    image: vilkasts/app-test:latest
     depends_on:
       - db
     env_file:
@@ -21,10 +21,10 @@ services:
 
   db:
     container_name: home-library-service-db
+    image: vilkasts/db-test:latest
 #    build:
 #      context: ./prisma
 #      dockerfile: Dockerfile
-    image: vilkasts/db-test:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_HOST: ${POSTGRES_HOST}
