@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthCheck } from './tools/auth-check/auth-check';
+import { LoggerModule } from './tools/logger/logger.module';
 import {
   AlbumModule,
   ArtistModule,
@@ -20,6 +21,7 @@ import {
     ArtistModule,
     AuthModule,
     FavoritesModule,
+    LoggerModule,
     PrismaModule,
     TrackModule,
     UserModule,
