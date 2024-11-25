@@ -1,8 +1,59 @@
 # Dzmitry Luzko (Dzmitry(@vilkasts)) repo
 
-## Task 7: Home Library Service
+## Task 8: Home Library Service: Containerization, Docker and Database & ORM
 
 A RESTful API for managing a personal library of Users, Artists, Albums, Tracks, and Favorites. This application is built with modularity in mind to later integrate with a database.
+
+---
+
+## Getting Started
+
+1. Clone the repository.
+2. Select the `feat/containerization-database-orm` branch and pull the latest changes using `git pull`
+3. Create `.env` file
+4. Use `npm install` to install dependencies
+5. Run vulnerabilities scan `npm run audit`
+6. Run `npm run prisma:generate`
+
+---
+
+## Running application with Docker
+
+1. Install Docker Desktop application - [Link](https://docs.docker.com/engine/install/)
+2. Run Docker Desktop application on your local machine
+3. `npm run start:docker` - Run the project using Docker
+4. Application is available on `localhost:4000` (list of available endpoints below)
+5. Use `npm run test` to run all e2e test
+
+---
+
+## Usage
+
+`npm run start` - Run the project
+
+`npm run start:dev` - Run the project in `development` mode
+
+`npm run start:debug` - Run the project in `debug` mode
+
+`npm run start:prod` - Run the project in `production` mode
+
+---
+
+## Testing
+
+`npm run test` - Run all tests
+
+`npm run test:auth` - Run `auth` tests
+
+`npm run test:refresh` - Run `refresh` tests
+
+`npm run test:watch` - Run tests in `watch` mode
+
+`npm run test:cov` - Run tests with coverage report
+
+`npm run test:debug` - Run tests in `debug` mode
+
+---
 
 ---
 
@@ -146,42 +197,5 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 - **artists**: `Array of strings (UUID)`
 - **albums**: `Array of strings (UUID)`
 - **tracks**: `Array of strings (UUID)`
-
-
----
-
-## Getting Started
-
-1. Clone the repository.
-2. Create `.env` file
-3. Install dependencies
-
----
-
-## Usage
-
-`npm run start` - Run the project
-
-`npm run start:dev` - Run the project in `development` mode
-
-`npm run start:debug` - Run the project in `debug` mode
-
-`npm run start:prod` - Run the project in `production` mode
-
----
-
-## Testing
-
-`npm run test` - Run all tests
-
-`npm run test:auth` - Run `auth` tests
-
-`npm run test:refresh` - Run `refresh` tests
-
-`npm run test:watch` - Run tests in `watch` mode
-
-`npm run test:cov` - Run tests with coverage report
-
-`npm run test:debug` - Run tests in `debug` mode
 
 ---

@@ -6,66 +6,81 @@ import {
   CreateArtistDto,
 } from './artist.entity';
 import { MessagesEnum } from '../../helpers/enums';
-import database from '../../database/database';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 class ArtistService {
-  get() {
-    return database.artistsData;
+  constructor(private readonly prisma: PrismaService) {}
+
+  async get() {
+    return this.prisma.artist.findMany();
   }
 
-  getById(id: string) {
-    const artist = database.artistsData.find((artist) => artist.id === id);
+  async getById(id: string) {
+    const artist = await this.prisma.artist.findUnique({
+      where: { id },
+    });
 
     if (!artist) {
-      throw new NotFoundException(MessagesEnum.NotFound);
+      throw new NotFoundException(
+        MessagesEnum.ArtistNotFound.replace('{{id}}', id),
+      );
     }
 
     return artist;
   }
 
-  post(createArtistDto: CreateArtistDto) {
+  async post(createArtistDto: CreateArtistDto) {
     const artist = new ArtistEntity(
       createArtistDto.name,
       createArtistDto.grammy,
     );
-    database.artistsData.push(artist);
+
+    await this.prisma.artist.create({
+      data: artist,
+    });
 
     return artist;
   }
 
-  put(id: string, updateArtistDto: UpdateArtistDto) {
-    const artist = this.getById(id);
+  async put(id: string, updateArtistDto: UpdateArtistDto) {
+    const artist = await this.getById(id);
 
-    Object.assign(artist, updateArtistDto);
-
-    return artist;
-  }
-
-  delete(id: string) {
-    const index = database.artistsData.findIndex((artist) => artist.id === id);
-
-    if (index === -1) {
-      throw new NotFoundException(MessagesEnum.NotFound);
+    if (!artist) {
+      return;
     }
 
-    database.artistsData.splice(index, 1);
+    return this.prisma.artist.update({
+      where: { id },
+      data: updateArtistDto,
+    });
+  }
 
-    database.tracksData.forEach((track) => {
-      if (track.artistId === id) {
-        track.artistId = null;
-      }
+  async delete(id: string) {
+    const artist = await this.getById(id);
+
+    if (!artist) {
+      return;
+    }
+
+    await this.prisma.artist.delete({
+      where: { id },
     });
 
-    database.albumsData.forEach((album) => {
-      if (album.artistId === id) {
-        album.artistId = null;
-      }
+    await this.prisma.track.updateMany({
+      where: { artistId: id },
+      data: { artistId: null },
     });
 
-    database.favoritesData.artists = database.favoritesData.artists.filter(
-      (artist) => artist !== id,
-    );
+    await this.prisma.album.updateMany({
+      where: { artistId: id },
+      data: { artistId: null },
+    });
+
+    // TODO: add after
+    // database.favoritesData.artists = database.favoritesData.artists.filter(
+    //   (artist) => artist !== id,
+    // );
   }
 }
 
