@@ -50,7 +50,7 @@ class UserController {
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', ParseUUIDPipe) id: string) {
-    this.userService.delete(id);
+    return this.userService.delete(id);
   }
 }
 
