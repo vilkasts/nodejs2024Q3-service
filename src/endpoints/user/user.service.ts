@@ -7,6 +7,7 @@ import {
 import { MessagesEnum } from '../../helpers/enums';
 import { CreateUserDto, UpdateUserDto, UserEntity } from './user.entity';
 import { PrismaService } from '../../prisma/prisma.service';
+import { hashPassword, validatePassword } from '../../helpers/helpers';
 
 @Injectable()
 class UserService {
@@ -46,6 +47,34 @@ class UserService {
     return user;
   }
 
+  async validateUser(
+    { login, password }: CreateUserDto,
+    isHashedPassword = false,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { login: login },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        MessagesEnum.UsernameNotFound.replace('{{username}}', login),
+      );
+    }
+
+    if (isHashedPassword && password !== user.password) {
+      throw new ForbiddenException(MessagesEnum.InvalidPassword);
+    }
+
+    if (
+      !isHashedPassword &&
+      !(await validatePassword(password, user.password))
+    ) {
+      throw new ForbiddenException(MessagesEnum.InvalidPassword);
+    }
+
+    return user;
+  }
+
   async post(createUserDto: CreateUserDto) {
     const users = await this.get();
     const isAlreadyExist = users.find(
@@ -56,7 +85,10 @@ class UserService {
       throw new ForbiddenException(MessagesEnum.UserAlreadyExists);
     }
 
-    const user = new UserEntity(createUserDto.login, createUserDto.password);
+    const user = new UserEntity(
+      createUserDto.login,
+      await hashPassword(createUserDto.password),
+    );
 
     await this.prisma.user.create({
       data: {
@@ -76,14 +108,14 @@ class UserService {
       return;
     }
 
-    if (user.password !== updateUserDto.oldPassword) {
-      throw new ForbiddenException(MessagesEnum.InvalidPassword);
+    if (!(await validatePassword(updateUserDto.oldPassword, user.password))) {
+      throw new ForbiddenException(MessagesEnum.InvalidOldPassword);
     }
 
     return this.prisma.user.update({
       where: { id },
       data: {
-        password: updateUserDto.newPassword,
+        password: await hashPassword(updateUserDto.newPassword),
         updatedAt: Date.now(),
         version: user.version + 1,
       },

@@ -105,12 +105,6 @@ class TrackService {
     await this.prisma.track.delete({
       where: { id },
     });
-
-    //TODO: Replace after
-
-    // database.favoritesData.tracks = database.favoritesData.tracks.filter(
-    //   (track) => track !== id,
-    // );
   }
 }
 
