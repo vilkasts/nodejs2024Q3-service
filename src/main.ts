@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { LoggerService } from './tools/logger/logger.service';
+import { ExceptionsFilter } from './tools/exception/exception.filter';
 
 async function bootstrap() {
   BigInt.prototype['toJSON'] = function () {
@@ -18,7 +19,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  process.on('uncaughtException', (error) => {
+  process.on('uncaughtException', (error: Error) => {
     loggerService.error('Uncaught Exception', error?.stack);
   });
 
@@ -29,6 +30,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
 
-  await app.useGlobalPipes(new ValidationPipe()).listen(process.env.PORT);
+  await app
+    .useGlobalPipes(new ValidationPipe())
+    .useGlobalFilters(new ExceptionsFilter(loggerService))
+    .listen(process.env.PORT);
 }
 bootstrap().then();

@@ -15,9 +15,14 @@ enum MessagesEnum {
   UserNotFound = "User with this identifier ({{id}}) doesn't exist",
 }
 
+enum ErrorsEnum {
+  LogsFailure = 'Failure during logging',
+  InternalError = 'Internal server error',
+}
+
 enum TokenExpiryTimeEnum {
   accessToken = '15m',
   refreshToken = '1h',
 }
 
-export { MessagesEnum, TokenExpiryTimeEnum };
+export { ErrorsEnum, MessagesEnum, TokenExpiryTimeEnum };
