@@ -1,6 +1,6 @@
 # Dzmitry Luzko (Dzmitry(@vilkasts)) repo
 
-## Task 8: Home Library Service: Containerization, Docker and Database & ORM
+## Task 9: Home Library Service: Logging, Error Handling, Authentication and Authorization
 
 A RESTful API for managing a personal library of Users, Artists, Albums, Tracks, and Favorites. This application is built with modularity in mind to later integrate with a database.
 
@@ -12,8 +12,6 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 2. Select the `feat/containerization-database-orm` branch and pull the latest changes using `git pull`
 3. Create `.env` file
 4. Use `npm install` to install dependencies
-5. Run vulnerabilities scan `npm run audit`
-6. Run `npm run prisma:generate`
 
 ---
 
@@ -24,6 +22,9 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 3. `npm run start:docker` - Run the project using Docker
 4. Application is available on `localhost:4000` (list of available endpoints below)
 5. Use `npm run test` to run all e2e test
+6. Use `npm run test:auth` to run all e2e test with authentication
+7. Use `npm run test:refresh` to run test to check refresh endpoint
+8. Logs are stored in the `logs` folder
 
 ---
 
@@ -35,7 +36,7 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 
 `npm run start:debug` - Run the project in `debug` mode
 
-`npm run start:prod` - Run the project in `production` mode
+`npm run start:prod` - Run the project in `production` mode (build the app before using)
 
 ---
 
@@ -52,8 +53,6 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
 `npm run test:cov` - Run tests with coverage report
 
 `npm run test:debug` - Run tests in `debug` mode
-
----
 
 ---
 
@@ -162,6 +161,22 @@ A RESTful API for managing a personal library of Users, Artists, Albums, Tracks,
     - `204` on successful removal.
     - `400` if `artistId` is invalid.
     - `404` if artist is not in favorites.
+
+### Authentication Endpoints (`/auth`)
+#### Signup (`/auth/signup`)
+- **POST /auth/signup** - Create a new user by sending login and password.
+  - `201` on success with a corresponding message.
+  - `400` if the DTO is invalid (e.g., missing `login` or `password`, or they are not strings).
+#### Login (`/auth/login`)
+- **POST /auth/login** - Remove a track from favorites.
+  - `200` on success, returns tokens in the response body.
+  - `400` if the DTO is invalid (e.g., missing `login` or `password`, or they are not strings).
+  - `403` if authentication fails (e.g., no user with such login, or password doesn't match).
+#### Refresh  (`/auth/refresh`)
+- **POST /auth/refresh** - Refresh authentication tokens by sending a Refresh Token in the body as { `refreshToken` }.
+  - `200` on success, returns a new pair of Access Token and Refresh Token.
+  - `401` if the DTO is invalid (e.g., no `refreshToken` in the body).
+  - `403` if the Refresh Token is invalid or expired.
 
 ---
 
