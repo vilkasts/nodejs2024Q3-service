@@ -17,7 +17,7 @@
     "start": "nest start",
     "start:dev": "dotenv -e .env.local nest start --watch",
     "start:debug": "dotenv -e .env.local nest start --debug --watch",
-    "start:prod": "node dist/src/main",
+    "start:prod": "node dist/main",
     "start:docker": "docker-compose up",
     "test": "jest --testMatch \"<rootDir>/*.spec.ts\" --noStackTrace --runInBand",
     "test:auth": "cross-env TEST_MODE=auth jest --testPathIgnorePatterns refresh.e2e.spec.ts --noStackTrace --runInBand",

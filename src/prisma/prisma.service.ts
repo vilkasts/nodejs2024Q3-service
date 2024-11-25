@@ -12,7 +12,4 @@ export class PrismaService
   async onModuleDestroy() {
     await this.$disconnect();
   }
-  favoriteArtists: any;
-  favoriteAlbums: any;
-  favoriteTracks: any;
 }

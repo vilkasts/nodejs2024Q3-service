@@ -76,11 +76,6 @@ class ArtistService {
       where: { artistId: id },
       data: { artistId: null },
     });
-
-    // TODO: add after
-    // database.favoritesData.artists = database.favoritesData.artists.filter(
-    //   (artist) => artist !== id,
-    // );
   }
 }
 

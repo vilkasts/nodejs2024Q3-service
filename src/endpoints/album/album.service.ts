@@ -88,30 +88,6 @@ class AlbumService {
       where: { albumId: id },
       data: { albumId: null },
     });
-
-    // TODO: add after
-    // const favorites = await this.prisma.favorites.findMany({
-    //   where: {
-    //     albums: {
-    //       has: id,
-    //     },
-    //   },
-    // });
-    //
-    // console.log(favorites);
-    //
-    // await Promise.all(
-    //   favorites.map((favorite) =>
-    //     this.prisma.favorites.update({
-    //       where: { userId: favorite.userId },
-    //       data: {
-    //         albums: {
-    //           set: favorite.albums.filter((albumId) => albumId !== id),
-    //         },
-    //       },
-    //     }),
-    //   ),
-    // );
   }
 }
 

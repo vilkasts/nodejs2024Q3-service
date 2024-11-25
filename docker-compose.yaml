@@ -3,7 +3,8 @@ services:
     container_name: home-library-service
     command: sh -c "npx prisma migrate deploy && npm run start:prod"
     working_dir: /app
-    image: vilkasts/app-test:latest
+#    image: vilkasts/app-test:latest
+    image: vilkasts/nodejs2024q3-service-app:latest
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
@@ -21,7 +22,8 @@ services:
 
   db:
     container_name: home-library-service-db
-    image: vilkasts/db-test:latest
+#    image: vilkasts/db-test:latest
+    image: vilkasts/nodejs2024q3-service-db:latest
 #    build:
 #      context: ./prisma
 #      dockerfile: Dockerfile
