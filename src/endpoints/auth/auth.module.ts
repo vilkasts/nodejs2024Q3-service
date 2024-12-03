@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { UserService } from '../user/user.service';
 import { TokenExpiryTimeEnum } from '../../helpers/enums';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { TokenExpiryTimeEnum } from '../../helpers/enums';
       signOptions: { expiresIn: TokenExpiryTimeEnum.refreshToken },
     }),
   ],
-  controllers: [UserController],
-  providers: [UserService, PrismaService],
+  controllers: [AuthController],
+  providers: [AuthService, PrismaService, UserService],
 })
-export class UserModule {}
+export class AuthModule {}
